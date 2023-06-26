@@ -14,16 +14,6 @@ from server.routes.crypto import c_router as Crypto_router
 
 app = FastAPI(title='server_gasket')
 
-# Список того, что разрешено передавать и какими методами пользоваться:
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins = http.ELA_API_ORIGINS,
-#     allow_credentials = True,
-#     allow_methods = ["*"],
-#     allow_headers = ["*"],
-    
-    
-# )
 
 @app.get("/", tags=["Root"])
 def read_root():
