@@ -30,8 +30,8 @@ async def get_data_from_coingeko(request:Request, crypto_list:list):
         crypto_data = await coin_geko_crud_data_task
         result_dict = {}
         for coin in crypto_data:
-                result_dict[coin['id']]={}
-                result_dict[coin['id']]['price'], result_dict[coin['id']]['circulating_supply']= coin['current_price'],coin['circulating_supply']
+                result_dict[coin['symbol']]={}
+                result_dict[coin['symbol']]['price'], result_dict[coin['symbol']]['circulating_supply']= coin['current_price'],coin['circulating_supply']
         for request_coin in crypto_list:
                 if request_coin not in result_dict.keys():
                         result_dict[request_coin] = "Такой монеты не существует, проверьте правильность написания"
