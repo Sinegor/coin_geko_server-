@@ -28,12 +28,13 @@ async def get_data_from_coingeko(request:Request, crypto_list:list):
         crypto_list = [string_handling(asset) for asset in crypto_list]
         coin_geko_crud_data_task  = asyncio.create_task(get_crypto_data(coin_geko_url, crypto_list))
         crypto_data = await coin_geko_crud_data_task
-        result_dict = {}
+        result_dict = {'checking_ids':[]}
         for coin in crypto_data:
                 result_dict[coin['symbol']]={}
                 result_dict[coin['symbol']]['price'], result_dict[coin['symbol']]['circulating_supply']= coin['current_price'],coin['circulating_supply']
+                result_dict['checking_ids'].append(coin['id'])
         for request_coin in crypto_list:
-                if request_coin not in result_dict.keys():
+                if request_coin not in result_dict['checking_ids']:
                         result_dict[request_coin] = "Такой монеты не существует, проверьте правильность написания"
         return  result_dict
     
