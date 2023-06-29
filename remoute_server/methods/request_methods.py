@@ -5,11 +5,13 @@ import asyncio
 
 from aiohttp import ClientSession
 
-def sort_coin_data(d:dict):
-    return d['name']
+
 
 async def make_connection(session:ClientSession, url, params=None):
-       async with session.get(url, params=params,) as response:
+    """Universal function to direct asynchronous get request to any API 
+resource Coin Geko.  Takes into account the peculiarity of free Coin Geko API
+ - periodically not to accept requests for some time                       """
+    async with session.get(url, params=params,) as response:
            if response.status == 429:
                time_delta = int(response.headers['Retry-After'])
                await asyncio.sleep(time_delta)
@@ -41,7 +43,7 @@ async def get_crypto_price(url, crypto_assets, fiat_coin='usd'):
                 result_data[crypto]= data_dict[crypto][fiat_coin] 
             return result_data 
     except KeyError as e:
-        result_data[crypto] = 'Такой монеты не существует, проверьте правильность написания'
+        result_data[crypto] = 'There is no such coin, check the spelling correctly'
         return result_data 
 
 async def get_crypto_data(url, crypto_assets, fiat_coin='usd'):
@@ -54,6 +56,5 @@ async def get_crypto_data(url, crypto_assets, fiat_coin='usd'):
                 response_data_task = asyncio.create_task(make_connection(session, url, params_query))
                 response_data = await response_data_task
                 result_data = json.loads(response_data)
-                result_data.sort(key= sort_coin_data)
                 return result_data
         

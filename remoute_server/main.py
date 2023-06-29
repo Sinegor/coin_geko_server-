@@ -7,7 +7,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
-from server.routes.crypto import c_router as Crypto_router
+from remoute_server.routes.crypto import c_router as Crypto_router
+
+
 
 #from server.consts import http
 
@@ -25,6 +27,7 @@ app.include_router(Crypto_router)
 if __name__ == "__main__":
     import logging
     import uvicorn
+    
     logging.basicConfig(level=logging.DEBUG)
     logger = logging.getLogger('unicorn')
     logger.setLevel(logging.DEBUG)

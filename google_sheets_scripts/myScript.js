@@ -1,17 +1,20 @@
 function send_request() {
+// Get their table list of coins in the form of an array
   function construct_data(){
       let cryptoSheet = SpreadsheetApp.openById('12WpFL4N-Uj8BjDKbqkezcAcBA8mX8aLMwJ-sX-XokKU')
-      let investSheet = cryptoSheet.getSheetByName('Invest')
+      let investSheet = cryptoSheet.getSheetByName('Coin Geko ids')
       let sizeSheet = investSheet.getLastRow()
-      let crudArrow = investSheet.getRange(2,3,sizeSheet-1,3).getValues()
-      let coinsArrow = []
-      for (let coin of crudArrow){
-        coinsArrow.push(coin[0])
+// crudArrow is array of arrays
+      let crudArray = investSheet.getRange(2,1,sizeSheet-1,1).getValues()
+      let coinsArray = []
+      for (let coin of crudArray){
+        coinsArray.push(coin[0])
       }
-      return coinsArrow
+      return coinsArray
     }
   
   function requestData(coins){
+  //send request to server-layer
       let requestUrl = 'http://94.142.136.139:80/crypto/cryptodata'
       let options = {
         'method': 'post',
@@ -24,24 +27,27 @@ function send_request() {
       }
   
   function setCellValues(data, priceColumn, supplayColumn){
+//Place the received data to the corresponding cells of the sheet
       let cryptoSheet = SpreadsheetApp.openById('12WpFL4N-Uj8BjDKbqkezcAcBA8mX8aLMwJ-sX-XokKU')
       let investSheet = cryptoSheet.getSheetByName('Invest')
       let sizeSheet = investSheet.getLastRow()
       for (let i=2; i<sizeSheet+1; i++){
-        let currentCoin = investSheet.getRange(i,3).getValue()
+        let currentCoin = investSheet.getRange(i,2).getValue()
         let cellPrice = investSheet.getRange(i,priceColumn)
         let cellSupplay = investSheet.getRange(i, supplayColumn)
-        if (typeof(data[currentCoin]) == 'object'){
+        if (currentCoin in data){
           cellPrice.setValue(data[currentCoin]['price'])
           cellSupplay.setValue(data[currentCoin]['circulating_supply'])
         }else{
-          cellPrice.setValue(data[currentCoin])
-          cellSupplay.setValue(data[currentCoin])
+          cellPrice.setValue('Проверьте правильность заполнения полей "Symbol" и "Coin Geko ids"')
+          cellSupplay.setValue('Error')
         }
       }
      }
   let coinsList = construct_data()
   let coinGekoData = requestData(coinsList)
-  setCellValues(coinGekoData, 8, 16)
+  setCellValues(coinGekoData, 7, 15)
 }
-send_request()
+
+
+
