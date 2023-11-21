@@ -57,4 +57,10 @@ async def get_crypto_data(url, crypto_assets, fiat_coin='usd'):
                 response_data = await response_data_task
                 result_data = json.loads(response_data)
                 return result_data
-        
+
+async def get_data_market_from_coingeko(data_list):
+    coin_geko_url = 'https://api.coingecko.com/api/v3/coins/markets'
+    crypto_list = [string_handling(asset) for asset in data_list]
+    coin_geko_crud_data_task  = asyncio.create_task(get_crypto_data(coin_geko_url, crypto_list))
+    crypto_data = await coin_geko_crud_data_task
+    return crypto_data

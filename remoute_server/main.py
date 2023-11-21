@@ -31,9 +31,10 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     logger = logging.getLogger('unicorn')
     logger.setLevel(logging.DEBUG)
+    
 
     uvicorn.run(app, host ="94.142.136.139", port=80)
-
+    #uvicorn.run(app, host ="127.0.0.1", port=8000)
 
 
 

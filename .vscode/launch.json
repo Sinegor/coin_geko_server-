@@ -4,18 +4,38 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": "FastAPI: cryptoserver",
+            "name": "Python: FastAPI",
             "type": "python",
             "request": "launch",
-            "console": "integratedTerminal",
             "module": "uvicorn",
             "args": [
-                "server.main:app",
+                "remoute_server.main:app",
+                "--reload"
             ],
             "jinja": true,
-            "justMyCode": true
-        }
+            "justMyCode": true,
+            "env": {
+                
+                "ssl_mode": "prefer",
+                
+            },
+
+
+        },
+        // {
+        //     "name": "FastAPI: cryptoserver",
+        //     "type": "python",
+        //     "request": "launch",
+        //     "console": "integratedTerminal",
+        //     "module": "uvicorn",
+        //     "cwd": "${workspaceFolder}/remoute_server/",
+        //     //"program": "${workspaceFolder}/remoute_server/main.py",
+        //     "args": [
+        //         "main:app",
+        //     ],
+        //     "jinja": true,
+        //     "justMyCode": true,
+        // }
     ]
 }
